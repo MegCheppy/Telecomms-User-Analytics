@@ -1,0 +1,61 @@
+# %%
+import pandas as pd
+import numpy as np
+
+# %% [markdown]
+# Understanding the data. To do this one needs to clean the data.
+
+# %%
+import warnings
+warnings.filterwarnings('ignore')
+pd.set_option('max_column', None)
+db = pd.read_csv('data\Week1_challenge_data_source(CSV).csv', na_values=['?', None])
+db.head() #returns the first 5 rows.
+#pd.set_option('display.float_format',) #review decimal places function
+
+# %% [markdown]
+# Data exploration. Find out the content of the data. The table below shows the description of fields in the data.
+
+# %%
+#list column names
+db.columns.tolist()
+
+
+# %%
+# number of data points
+print(f" There are {db.shape[0]} rows and {db.shape[1]} columns")
+
+# %% [markdown]
+# Handling missing values.
+
+# %%
+# how many missing values exist or better still what is the % of missing values in the dataset?
+def percent_missing(df):
+
+    # Calculate total number of cells in dataframe
+    totalCells = np.product(df.shape)
+
+    # Count number of missing values per column
+    missingCount = df.isnull().sum()
+
+    # Calculate total number of missing values
+    totalMissing = missingCount.sum()
+
+    # Calculate percentage of missing values
+    print("TellCo's financial dataset contains", round(((totalMissing/totalCells) * 100), 2), "%", "missing values.")
+
+percent_missing(db)
+
+# %%
+# Now which column(s) has missing values
+db.isna().sum()
+
+# %% [markdown]
+# The data above shows the columns and the respective number of missing  values. Since the dataset has 150001 rows, we can drop the rows with the missing values, and still remain with a substantial data for our analysis.
+
+# %%
+# drop columns with more than 30% missing values
+df_clean = db.drop(['Bearer Id', 'IMSI', 'MSISDN/Number', 'Nb of sec with 37500B < Vol UL', 'Nb of sec with 6250B < Vol UL < 37500B'], axis=1)
+df_clean.shape
+
+
