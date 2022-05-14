@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  telecommsuseranalyticsmain:
+    image: telecommsuseranalyticsmain
+    build:
+      context: .
+      dockerfile: ./Dockerfile
